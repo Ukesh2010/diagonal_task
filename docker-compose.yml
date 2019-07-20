@@ -1,0 +1,53 @@
+version: '2'
+services:
+    mysql-diagonal-task:
+        container_name: mysql-diagonal-task
+        build:
+            context: ./compose/mysql
+            args:
+                MYSQL_DATABASE: ${FIRST_TIME_SETUP_MYSQL_DATABASE}
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: ${FIRST_TIME_SETUP_MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${FIRST_TIME_SETUP_MYSQL_DATABASE}
+        volumes:
+            - ./data/mysql:/var/lib/mysql
+        expose:
+            - 3306
+        ports:
+        - 3306:3306
+    php-diagonal-task:
+        container_name: php-diagonal-task
+        build:
+            context: ./compose/php
+        restart: always
+        environment:
+            DIAGONAL_ENVIRONMENT_TYPE: ${DIAGONAL_ENVIRONMENT_TYPE}
+            DIAGONAL_SYMFONY_SECRET: ${DIAGONAL_SYMFONY_SECRET}
+            MYSQL_HOST: mysql-diagonal-task
+            MYSQL_USER: root
+            MYSQL_PORT: 3306
+            MYSQL_DATABASE_NAME: ${FIRST_TIME_SETUP_MYSQL_DATABASE}
+            MYSQL_PASSWORD: ${FIRST_TIME_SETUP_MYSQL_ROOT_PASSWORD}
+        volumes:
+            - ./app:/srv
+        expose:
+            - 9000
+        depends_on:
+            - mysql-diagonal-task
+    nginx-diagonal-task:
+        container_name: nginx-diagonal-task
+        build:
+            context: ./compose/nginx
+            args:
+                DIAGONAL_TASK_DOMAIN: ${DIAGONAL_TASK_DOMAIN}
+                PHP_HOST: php-diagonal-task
+                PHP_PORT: 9000
+        depends_on:
+            - php-diagonal-task
+        restart: always
+        volumes:
+            - ./app:/srv
+            - ./logs/nginx:/var/log/nginx
+        ports:
+            - 8089:80

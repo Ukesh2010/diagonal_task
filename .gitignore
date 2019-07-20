@@ -1,0 +1,7 @@
+###< symfony/framework-bundle ###
+app/var/*
+app/.env
+app/vendor
+.idea
+logs
+data
