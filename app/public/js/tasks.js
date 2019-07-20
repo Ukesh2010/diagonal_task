@@ -84,22 +84,28 @@
                 },
                 success: function (data) {
                     alert("new task is created.");
+                    loadTasks();
                 }
 
             });
         }
 
-        $.ajax({
-            url: 'tasks',
-            type: 'GET',
-            error: function (error) {
-                console.log(error);
-            },
-            success: function (data) {
-                tasks = data;
-                onTasksLoad();
-            }
+        function loadTasks() {
+            $.ajax({
+                url: 'tasks',
+                type: 'GET',
+                error: function (error) {
+                    console.log(error);
+                },
+                success: function (data) {
+                    tasks = data;
+                    onTasksLoad();
+                }
 
-        });
+            });
+        }
+
+        loadTasks();
+
     });
 })(window.jQuery);
