@@ -32,15 +32,12 @@ class TaskRepository extends ServiceEntityRepository
     }
 
 
-    /*
-    public function findOneBySomeField($value): ?Task
+    public function findMaxPosition()
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
+            ->select('t, MAX(t.position) as position_max')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getSingleResult();
     }
-    */
+
 }

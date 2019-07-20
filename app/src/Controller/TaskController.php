@@ -32,6 +32,38 @@ class TaskController extends AbstractController
     }
 
     /**
+     * @Route("/", name="task_create", methods={"POST"})
+     */
+    public function create(Request $request, TaskRepository $taskRepository, ObjectManager $manager, SerializerInterface $serializer)
+    {
+        $requestData = $request->request->all();
+
+        if (!isset($requestData['title'])) {
+            return new JsonResponse(['message' => 'title is required'], Response::HTTP_BAD_REQUEST);
+        }
+        if (!isset($requestData['description'])) {
+            return new JsonResponse(['message' => 'description is required'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $maxData = $taskRepository->findMaxPosition();
+        $maxPosition = $maxData['position_max'];
+
+        $task = new Task();
+        $task->setTitle($requestData['title'])
+            ->setDescription($requestData['description'])
+            ->setPosition($maxPosition + 1);
+
+        $manager->persist($task);
+
+        $manager->flush();
+
+        $jsonResponse = new JsonResponse(null, Response::HTTP_CREATED);
+        $jsonResponse->setJson($serializer->serialize($task, 'json'));
+
+        return $jsonResponse;
+    }
+
+    /**
      * @Route("/{taskId}/position-update/", name="task_edit", methods={"PATCH"})
      */
     public function edit(Request $request,

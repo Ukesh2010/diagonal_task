@@ -3,6 +3,15 @@
     $(document).ready(function () {
         var tasks = [];
         var $taskList = $('#task-list');
+        var $taskform = $('#task-form');
+        var $title = $('#title');
+        var $description = $('#description');
+
+        $taskform.on('submit', function (e) {
+            e.preventDefault();
+            remoteTaskCreate($title.val(), $description.val());
+        });
+
 
         function taskPositionUpdate(taskId, oldPosition, newPosition) {
             var factor = newPosition - oldPosition;
@@ -60,6 +69,21 @@
                 },
                 success: function (data) {
                     console.log(data);
+                }
+
+            });
+        }
+
+        function remoteTaskCreate(taskTitle, taskDescription) {
+            $.ajax({
+                url: `tasks/`,
+                data: {'title': taskTitle, 'description': taskDescription},
+                type: 'POST',
+                error: function (error) {
+                    console.log(error);
+                },
+                success: function (data) {
+                    alert("new task is created.");
                 }
 
             });
