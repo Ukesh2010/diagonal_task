@@ -82,6 +82,9 @@
             "config/packages/prod/jms_serializer.yaml"
         ]
     },
+    "symfony/asset": {
+        "version": "v4.3.2"
+    },
     "symfony/cache-contracts": {
         "version": "v1.1.5"
     },

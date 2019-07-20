@@ -1,20 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
-
+{% block title %}Tasks{% endblock %}
+{% block stylesheets %}
+    <link href="{{ asset('plugins/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('plugins/jquery-ui-1.12.1.custom/jquery-ui.css') }}" rel="stylesheet">
+{% endblock %}
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <main style="margin-top: 20px">
+        <div class="container">
+            <ul class="list-group" id="task-list">
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+            </ul>
+        </div>
+    </main>
+{% endblock %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/srv/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/srv/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
-</div>
+{% block javascripts %}
+    <script src="{{ asset('plugins/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('plugins/popper.min.js') }}"></script>
+    <script src="{{ asset('plugins/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('plugins/jquery-ui-1.12.1.custom/jquery-ui.js') }}"></script>
+    <script src="{{ asset('js/tasks.js') }}"></script>
 {% endblock %}
